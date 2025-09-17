@@ -1,22 +1,35 @@
 launch = document.getElementById("launch");
 closeBtn = document.getElementById("close");
-canva = document.getElementById("pong");
+canva = document.getElementById("pongCanva");
 score = document.getElementById("score");
 
-launch.addEventListener("click", () => {launchgame();});
-
+launch.addEventListener("click", () => {
+  launchgame();
+});
 
 //Function to launch the game
-function launchgame(){
-    //alert("Lancement de la partie");//temp
+function launchgame() {
+
+    drawPaddle();
+  console.log("Game started");
+ 
+  //alert("Lancement de la partie");//temp
+}
+
+function drawPaddle(x, y) {
+
+  ctx = canva.getContext("2d");
+  ctx.fillStyle = "black";
+  paddleSizeX = 200;
+  paddleSizeY = 10;
+  ctx.fillRect(canva.width/2-paddleSizeX/2, canva.height - 25, paddleSizeX, paddleSizeY); // x, y, width, height
 }
 
 //Fucntion to stop the game
-function closegame(){}
+function closegame() {}
 
 //Function to move the paddle on the right
-function onRight(){}
+function onRight() {}
 
 //Function to move the paddle on the left
-function onLeft(){}
-
+function onLeft() {}
