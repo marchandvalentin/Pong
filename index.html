@@ -3,9 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pong</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <script src="JS/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
+    <h1>Pong</h1>
+    <!--<i class="fa-solid fa-basketball"></i>-->
+
+    <!--canva au milieux-->
+    <canvas id="pongCanva" width="800" height="400">
+        
+    </canvas>
+    
+    <!--Boutons droite-gauche-->
+    <div id = "dirrection">
+        <button id="left"><i class="fa-solid fa-circle-left"></i></button>
+        <button id="right"><i class="fa-solid fa-circle-right"></i></button>
+    </div>
+
+    <!--score de la partie-->
+    <p id="score">Score: 0s</p>
+   
+    <!--boutons du bas-->
+    <div id="buttons">
+        <button id = "launch">Lancer une partie</button>
+        <button id = "close">Fermer la partie</button>
+    </div>
+
+    
     
 </body>
 </html>
