@@ -17,20 +17,29 @@ closebtn.addEventListener("click", () => {
 }); 
 
 
-right.addEventListener("click", () => {
-    onRight();
+right.addEventListener("mousedown", () => {
+    rightInterval = setInterval(onRight, 50);
 });
 
-left.addEventListener("click", () => {
-    onLeft();
+right.addEventListener("mouseup", () => {
+   clearInterval(rightInterval);
 });
 
-paddleOX = 300;
-paddleOY = 380;
+
+
+left.addEventListener("mousedown", () => {
+   leftInterval = setInterval(onLeft, 50);
+});
+
+left.addEventListener("mouseup", () => {
+   clearInterval(leftInterval);
+});
 
 //Function to launch the game
 function launchgame() {
 
+    paddleOX = 300;
+    paddleOY = 380;
     drawPaddle(paddleOX, paddleOY);
     console.log("Game started");
     gameIsOn = true;
@@ -38,6 +47,7 @@ function launchgame() {
   //alert("Lancement de la partie");//temp
 }
 
+//Function to draw the paddle
 function drawPaddle(x, y) {
 
   ctx = canva.getContext("2d");
@@ -57,7 +67,7 @@ function closegame() {
 //Function to move the paddle on the right
 function onRight() {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX + 20;
+    newPaddleX = paddleOX + 30;
     if (newPaddleX + paddleSizeX <= canva.width) {
         ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);  
         drawPaddle(newPaddleX, paddleOY);
@@ -69,7 +79,7 @@ function onRight() {
 //Function to move the paddle on the left
 function onLeft() {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX - 20;
+    newPaddleX = paddleOX - 30;
     if (newPaddleX >= 0) {
         ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);  
         drawPaddle(newPaddleX, paddleOY);
