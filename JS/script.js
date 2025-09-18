@@ -1,5 +1,5 @@
 launch = document.getElementById("launch");
-closeBtn = document.getElementById("close");
+closebtn = document.getElementById("close");
 canva = document.getElementById("pongCanva");
 score = document.getElementById("score");
 
@@ -7,11 +7,15 @@ launch.addEventListener("click", () => {
   launchgame();
 });
 
+closebtn.addEventListener("click", () => {
+    closegame();
+}); 
+
 //Function to launch the game
 function launchgame() {
 
     drawPaddle();
-  console.log("Game started");
+    console.log("Game started");
  
   //alert("Lancement de la partie");//temp
 }
@@ -26,7 +30,10 @@ function drawPaddle(x, y) {
 }
 
 //Fucntion to stop the game
-function closegame() {}
+function closegame() {
+    ctx = canva.getContext("2d");
+    ctx.clearRect(0, 0, canva.width, canva.height);  
+}
 
 //Function to move the paddle on the right
 function onRight() {}
