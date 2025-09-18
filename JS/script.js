@@ -25,10 +25,13 @@ left.addEventListener("click", () => {
     onLeft();
 });
 
+paddleOX = 300;
+paddleOY = 380;
+
 //Function to launch the game
 function launchgame() {
 
-    drawPaddle(50, 30);
+    drawPaddle(paddleOX, paddleOY);
     console.log("Game started");
     gameIsOn = true;
  
@@ -54,12 +57,22 @@ function closegame() {
 //Function to move the paddle on the right
 function onRight() {
     ctx = canva.getContext("2d");
-    initX = 
-    initY;
+    newPaddleX = paddleOX + 20;
+    if (newPaddleX + paddleSizeX <= canva.width) {
+        ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);  
+        drawPaddle(newPaddleX, paddleOY);
+        paddleOX = newPaddleX;
+    }
 
 }
 
 //Function to move the paddle on the left
 function onLeft() {
-    
+    ctx = canva.getContext("2d");
+    newPaddleX = paddleOX - 20;
+    if (newPaddleX >= 0) {
+        ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);  
+        drawPaddle(newPaddleX, paddleOY);
+        paddleOX = newPaddleX;
+    }
 }
