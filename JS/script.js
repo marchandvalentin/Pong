@@ -23,6 +23,18 @@ right.addEventListener("mouseup", () => {
   clearInterval(rightInterval);
 });
 
+document.body.addEventListener("keydown", function (event) {
+  const key = event.key;
+  switch (key) {
+    case "ArrowLeft":
+      onLeft();
+      break;
+    case "ArrowRight":
+      onRight();
+      break;
+  }
+});
+
 left.addEventListener("mousedown", () => {
   leftInterval = setInterval(onLeft, 50);
 });
@@ -33,14 +45,16 @@ left.addEventListener("mouseup", () => {
 
 //Function to launch the game
 function launchgame() {
-  paddleOX = 300;
-  paddleOY = 380;
-  drawPaddle(paddleOX, paddleOY);
-  console.log("Game started");
-  gameIsOn = true;
-  handleTimer(true);
+  if (gameIsOn == false) {
+    paddleOX = 300;
+    paddleOY = 380;
+    drawPaddle(paddleOX, paddleOY);
+    gameIsOn = true;
+    handleTimer(true);
+  }
 }
 
+//Function to launch the timer
 function launchtimer() {
   sc = 0;
   ti = setInterval(() => {
@@ -49,23 +63,21 @@ function launchtimer() {
   }, 1000);
 }
 
+//Function to stop the timer and reset the score to 0
 function stoptimer() {
   clearInterval(ti);
+  sc = 0;
+  score.textContent = "Score : 0 s";
 }
 
+//Function to handle the timer depending on the boolean val in parameters
+//USELESS for the moment but could be useful later
 function handleTimer(val) {
   if (val == false) {
     stoptimer();
-    sc = 0;
-    score.textContent = "Score : 0 s";
-  }
-  else{
+  } else {
     launchtimer();
   }
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 //Function to draw the paddle
