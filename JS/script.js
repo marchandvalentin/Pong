@@ -39,20 +39,33 @@ function launchgame() {
   console.log("Game started");
   gameIsOn = true;
   handleTimer(true);
-  //alert("Lancement de la partie");//temp
 }
 
+function launchtimer() {
+  sc = 0;
+  ti = setInterval(() => {
+    sc++;
+    score.textContent = "Score : " + sc + " s";
+  }, 1000);
+}
 
-function handleTimer(val){
-    if(val == false)
-    {
-        sc = 0;
-        score.textContent = "Score: " + sc + "s";
-    }
+function stoptimer() {
+  clearInterval(ti);
+}
+
+function handleTimer(val) {
+  if (val == false) {
+    stoptimer();
+    sc = 0;
+    score.textContent = "Score : 0 s";
+  }
+  else{
+    launchtimer();
+  }
 }
 
 function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 //Function to draw the paddle
@@ -98,9 +111,8 @@ function onLeft() {
   }
 }
 
-function handleEndagme()
-{
+function handleEndagme() {
   alert("You lost the Game ! \n You'll do better next time.");
-  
+
   handleTimer(false);
 }
