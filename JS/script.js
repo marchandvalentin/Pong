@@ -1,12 +1,18 @@
+/* -------------------------------------------------------------------------- */
+/*                            VARIABLES DECLARATION                           */
+/* -------------------------------------------------------------------------- */
+
 launch = document.getElementById("launch");
 closebtn = document.getElementById("close");
 canva = document.getElementById("pongCanva");
 score = document.getElementById("score");
 left = document.getElementById("left");
 right = document.getElementById("right");
-
 gameIsOn = false;
 
+/* -------------------------------------------------------------------------- */
+/*                                EVENT LISTNER                               */
+/* -------------------------------------------------------------------------- */
 launch.addEventListener("click", () => {
   launchgame();
 });
@@ -43,12 +49,14 @@ left.addEventListener("mouseup", () => {
   clearInterval(leftInterval);
 });
 
+
 //Function to launch the game
 function launchgame() {
   if (gameIsOn == false) {
     paddleOX = 300;
     paddleOY = 380;
     drawPaddle(paddleOX, paddleOY);
+    drawBall();
     gameIsOn = true;
     handleTimer(true);
   }
@@ -62,6 +70,8 @@ function launchtimer() {
     score.textContent = "Score : " + sc + " s";
   }, 1000);
 }
+
+
 
 //Function to stop the timer and reset the score to 0
 function stoptimer() {
@@ -87,6 +97,14 @@ function drawPaddle(x, y) {
   paddleSizeX = 200;
   paddleSizeY = 10;
   ctx.fillRect(x, y, paddleSizeX, paddleSizeY); // x, y, width, height
+}
+
+function drawBall(){
+  ctx = canva.getContext("2d");
+  ctx.arc(paddleOX, canva.height-paddleOY,10,0,Math.PI*2);
+  ctx.fillStyle = "green";
+  ctx.fill();
+  ctx.closePath();
 }
 
 //Fucntion to stop the game
