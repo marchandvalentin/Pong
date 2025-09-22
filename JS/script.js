@@ -8,11 +8,20 @@ canva = document.getElementById("pongCanva");
 score = document.getElementById("score");
 left = document.getElementById("left");
 right = document.getElementById("right");
+
 gameIsOn = false;
+
+paddleSizeX = 75;
+paddleSizeY = 10;
+
+ballSpeed = 3;
+ballRadius = 6;
 
 /* -------------------------------------------------------------------------- */
 /*                                EVENT LISTNER                               */
 /* -------------------------------------------------------------------------- */
+
+
 launch.addEventListener("click", () => {
   launchgame();
 });
@@ -21,13 +30,13 @@ closebtn.addEventListener("click", () => {
   closegame();
 });
 
-right.addEventListener("mousedown", () => {
+/*right.addEventListener("mousedown", () => {
   rightInterval = setInterval(onRight, 50);
 });
 
 right.addEventListener("mouseup", () => {
   clearInterval(rightInterval);
-});
+});*/
 
 document.body.addEventListener("keydown", function (event) {
   const key = event.key;
@@ -41,24 +50,29 @@ document.body.addEventListener("keydown", function (event) {
   }
 });
 
-left.addEventListener("mousedown", () => {
+/*left.addEventListener("mousedown", () => {
   leftInterval = setInterval(onLeft, 50);
 });
 
 left.addEventListener("mouseup", () => {
   clearInterval(leftInterval);
-});
+});*/
 
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
 
 //Function to launch the game
 function launchgame() {
   if (gameIsOn == false) {
-    paddleOX = 300;
-    paddleOY = 380;
+    paddleOX = canva.width/2-paddleSizeX/2;
+    paddleOY = canva.height-20;
     drawPaddle(paddleOX, paddleOY);
-    drawBall();
+
+    drawBall(canva.width/2, 100);
     gameIsOn = true;
     handleTimer(true);
+    handeBallBehavior();
   }
 }
 
@@ -94,17 +108,16 @@ function handleTimer(val) {
 function drawPaddle(x, y) {
   ctx = canva.getContext("2d");
   ctx.fillStyle = "black";
-  paddleSizeX = 200;
-  paddleSizeY = 10;
+  
   ctx.fillRect(x, y, paddleSizeX, paddleSizeY); // x, y, width, height
 }
 
-function drawBall(){
+function drawBall(x, y){
   ctx = canva.getContext("2d");
-  ctx.arc(paddleOX, canva.height-paddleOY,10,0,Math.PI*2);
-  ctx.fillStyle = "green";
-  ctx.fill();
-  ctx.closePath();
+  ctx.beginPath();
+  ctx.fillStyle = "grey";
+  ctx.arc(x, y, 6, 0, 2 * Math.PI);
+  ctx.stroke();
 }
 
 //Fucntion to stop the game
@@ -146,3 +159,53 @@ function handleEndagme() {
 
   handleTimer(false);
 }
+
+function handeBallBehavior(){
+  ballY = 100;
+  pastX = canva.width/2; // Initial X position of the ball
+  pastY = ballY; // Initial Y position of the ball
+   let ballInterval = setInterval(() => {
+    ballY += ballSpeed; // La balle descend
+    
+    drawBallMoving(pastX, pastY+ballSpeed);
+    drawBall(pastX, pastY+ballSpeed);
+
+    pastX = pastX; // Update pastX (no horizontal movement for now)
+    pastY = pastY+ballSpeed; // Update pastY
+
+    if(ballY + ballRadius == paddleOY+paddleSizeY && (pastX >= paddleOX && pastX <= paddleOX + paddleSizeX)){
+      alert("impact paddle");
+      clearInterval(ballInterval);
+     }
+
+    if(ballY+ballRadius >= canva.height){
+      alert("impact en bas") ;
+      clearInterval(ballInterval);
+    }
+    if(ballX+ballRadius >= canva.width ){
+      alert("impact à droite");
+      clearInterval(ballInterval);
+    }
+    if(ballX-ballRadius <= 0 ){
+      alert("impact à gauche");
+      clearInterval(ballInterval);
+    }
+    if(ballY-ballRadius <= 0 ){
+      alert("impact en haut");
+      clearInterval(ballInterval);
+    }
+
+    
+  }, 15);
+}
+
+function drawBallMoving(ballX, ballY) {
+    ctx = canva.getContext("2d");
+    ctx.clearRect(0, 0, canva.width, canva.height); // Efface le canvas
+    drawPaddle(paddleOX, paddleOY); // Redessine le paddle
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.closePath();
+  }
