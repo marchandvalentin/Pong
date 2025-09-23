@@ -132,7 +132,7 @@ function closegame() {
 function onRight() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX + 30;
+    newPaddleX = paddleOX + 20;
     if (newPaddleX + paddleSizeX <= canva.width) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
@@ -145,7 +145,7 @@ function onRight() {
 function onLeft() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX - 30;
+    newPaddleX = paddleOX - 20;
     if (newPaddleX >= 0) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
@@ -153,7 +153,7 @@ function onLeft() {
     }
   }
 }
-
+ 
 function handleEndagme() {
   alert("You lost the Game ! \n You'll do better next time.");
 
@@ -161,41 +161,45 @@ function handleEndagme() {
 }
 
 function handeBallBehavior(){
+  ballX = canva.width / 2;
   ballY = 100;
-  pastX = canva.width/2; // Initial X position of the ball
-  pastY = ballY; // Initial Y position of the ball
-   let ballInterval = setInterval(() => {
-    ballY += ballSpeed; // La balle descend
-    
-    drawBallMoving(pastX, pastY+ballSpeed);
-    drawBall(pastX, pastY+ballSpeed);
+  pastX = ballX;
+  pastY = ballY;
+  let ballInterval = setInterval(() => {
+    ballX += ballSpeed; // ballX += ballSpeed => vers la droite ballY += ballSpeed => vers le bas
+  
+    drawBallMoving(ballX, ballY);
 
-    pastX = pastX; // Update pastX (no horizontal movement for now)
-    pastY = pastY+ballSpeed; // Update pastY
+    pastX = ballX;
+    pastY = ballY;
 
-    if(ballY + ballRadius == paddleOY+paddleSizeY && (pastX >= paddleOX && pastX <= paddleOX + paddleSizeX)){
+    // Collision avec le paddle
+    if (
+      ballY + ballRadius >= paddleOY && 
+      ballX >= paddleOX &&
+      ballX <= paddleOX + paddleSizeX
+    ) {
       alert("impact paddle");
       clearInterval(ballInterval);
-     }
+    }
 
-    if(ballY+ballRadius >= canva.height){
-      alert("impact en bas") ;
+    // Collision avec les bords
+    if (ballY + ballRadius >= canva.height) {
+      alert("impact en bas");
       clearInterval(ballInterval);
     }
-    if(ballX+ballRadius >= canva.width ){
+    if (ballX + ballRadius >= canva.width) {
       alert("impact à droite");
       clearInterval(ballInterval);
     }
-    if(ballX-ballRadius <= 0 ){
+    if (ballX - ballRadius <= 0) {
       alert("impact à gauche");
       clearInterval(ballInterval);
     }
-    if(ballY-ballRadius <= 0 ){
+    if (ballY - ballRadius <= 0) {
       alert("impact en haut");
       clearInterval(ballInterval);
     }
-
-    
   }, 15);
 }
 

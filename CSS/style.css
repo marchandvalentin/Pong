@@ -24,7 +24,7 @@ h1 {
     margin-top: 0px;
     display: flex;
 
-    border: 2px solid #333;
+    border: #333, 2px solid;
 }
 
 
