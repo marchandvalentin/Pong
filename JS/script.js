@@ -14,7 +14,7 @@ gameIsOn = false;
 paddleSizeX = 75;
 paddleSizeY = 10;
 
-ballSpeed = 3;
+//ballSpeed = 3;
 ballRadius = 6;
 
 // Animation frame variables
@@ -141,14 +141,14 @@ function closegame() {
   drawPaddle(paddleOX, paddleOY);*/
 
   gameIsOn = false;
-  //handleTimer(false);
+  handleTimer(false);
 }
 
 //Function to move the paddle on the right
 function onRight() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX + 2;
+    newPaddleX = paddleOX + 5;
     if (newPaddleX + paddleSizeX <= canva.width) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
@@ -165,7 +165,7 @@ function onRight() {
 function onLeft() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX - 2;
+    newPaddleX = paddleOX - 5;
     if (newPaddleX >= 0) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
@@ -190,11 +190,13 @@ function handeBallBehavior(){
   pastX = ballX;
   pastY = ballY;
 
-
+  ballSpeedX = 1;
+  ballSpeedY = 3;
   
   let ballInterval = setInterval(() => {
-    ballY += ballSpeed; // ballX += ballSpeed => vers la droite ballY += ballSpeed => vers le bas
-  
+    ballY += ballSpeedY; // ballX += ballSpeed => vers la droite ballY += ballSpeed => vers le bas
+    ballX += ballSpeedX;
+
     drawBallMoving(ballX, ballY);
 
     pastX = ballX;
@@ -206,25 +208,26 @@ function handeBallBehavior(){
       ballX >= paddleOX &&
       ballX <= paddleOX + paddleSizeX
     ) {
-      alert("impact paddle");
+      console.log("impact paddle");
       clearInterval(ballInterval);
     }
 
     // Collision avec les bords
     if (ballY + ballRadius >= canva.height) {
-      alert("impact en bas");
+      console.log("Perdu !");
+      closegame();
       clearInterval(ballInterval);
     }
     if (ballX + ballRadius >= canva.width) {
-      alert("impact à droite");
+      console.log("impact à droite");
       clearInterval(ballInterval);
     }
     if (ballX - ballRadius <= 0) {
-      alert("impact à gauche");
+      console.log("impact à gauche");
       clearInterval(ballInterval);
     }
     if (ballY - ballRadius <= 0) {
-      alert("impact en haut");
+      console.log("impact en haut");
       clearInterval(ballInterval);
     }
   }, 15);
