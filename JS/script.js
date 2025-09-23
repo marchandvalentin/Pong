@@ -254,18 +254,18 @@ function drawBallMoving(ballX, ballY) {
   }
 
 
-  //add speed to the ball after each bounce up to (times the original speed)
+//add speed to the ball after each bounce up to (times the original speed)
 function addSpeed(){
-    //entre -speed de base *5 et 0
-    if( ballSpeedX > -defaultXspeed*5 && ballSpeedX < 0 ){
-      ballSpeedX -= 0.5;
-    }
+  //entre -speed de base *5 et 0
+  if( ballSpeedX > -defaultXspeed*5 && ballSpeedX < 0 ){
+    ballSpeedX -= 0.5;
+  }
 
-    if( ballSpeedY > -defaultYspeed*5 && ballSpeedY < 0 ){
-      ballSpeedY -= 0.5;
-    }
+  if( ballSpeedY > -defaultYspeed*5 && ballSpeedY < 0 ){
+    ballSpeedY -= 0.5;
+  }
 
-    //entre 0 et la speed de base *5
+  //entre 0 et la speed de base *5
   if ( ballSpeedX > 0 && ballSpeedX < defaultXspeed*5){
     ballSpeedX += 0.5;
   } 
