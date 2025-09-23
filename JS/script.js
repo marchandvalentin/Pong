@@ -17,6 +17,10 @@ paddleSizeY = 10;
 ballSpeed = 3;
 ballRadius = 6;
 
+// Animation frame variables
+let rightAnimation = null;
+let leftAnimation = null;
+
 /* -------------------------------------------------------------------------- */
 /*                                EVENT LISTNER                               */
 /* -------------------------------------------------------------------------- */
@@ -24,39 +28,49 @@ ballRadius = 6;
 
 launch.addEventListener("click", () => {
   launchgame();
+  console.log("Game launched !"); 
 });
 
 closebtn.addEventListener("click", () => {
   closegame();
 });
 
-/*right.addEventListener("mousedown", () => {
-  rightInterval = setInterval(onRight, 50);
+right.addEventListener("mousedown", () => {
+  rightAnimation = window.requestAnimationFrame(onRight);
 });
 
 right.addEventListener("mouseup", () => {
-  clearInterval(rightInterval);
-});*/
+  window.cancelAnimationFrame(rightAnimation);
+  rightAnimation = null;
+});
 
 document.body.addEventListener("keydown", function (event) {
   const key = event.key;
   switch (key) {
     case "ArrowLeft":
-      onLeft();
+      leftAnimation = window.requestAnimationFrame(onLeft);
       break;
     case "ArrowRight":
-      onRight();
+      rightAnimation = window.requestAnimationFrame(onRight);
+      break;
+    
+    default:
+      window.cancelAnimationFrame(leftAnimation);
+      window.cancelAnimationFrame(rightAnimation);
+      leftAnimation = null;
+      rightAnimation = null;
       break;
   }
 });
 
-/*left.addEventListener("mousedown", () => {
-  leftInterval = setInterval(onLeft, 50);
+left.addEventListener("mousedown", () => {
+  leftAnimation = window.requestAnimationFrame(onLeft);
 });
 
 left.addEventListener("mouseup", () => {
-  clearInterval(leftInterval);
-});*/
+  window.cancelAnimationFrame(leftAnimation);
+  leftAnimation = null;
+});
 
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
@@ -85,17 +99,13 @@ function launchtimer() {
   }, 1000);
 }
 
-
-
 //Function to stop the timer and reset the score to 0
 function stoptimer() {
-  clearInterval(ti);
   sc = 0;
   score.textContent = "Score : 0 s";
 }
 
-//Function to handle the timer depending on the boolean val in parameters
-//USELESS for the moment but could be useful later
+
 function handleTimer(val) {
   if (val == false) {
     stoptimer();
@@ -112,6 +122,7 @@ function drawPaddle(x, y) {
   ctx.fillRect(x, y, paddleSizeX, paddleSizeY); // x, y, width, height
 }
 
+//Function to draw the ball
 function drawBall(x, y){
   ctx = canva.getContext("2d");
   ctx.beginPath();
@@ -124,19 +135,28 @@ function drawBall(x, y){
 function closegame() {
   ctx = canva.getContext("2d");
   ctx.clearRect(0, 0, canva.width, canva.height);
+
+  /*paddleOX = canva.width/2-paddleSizeX/2;
+  paddleOY = canva.height-20;
+  drawPaddle(paddleOX, paddleOY);*/
+
   gameIsOn = false;
-  handleTimer(false);
+  //handleTimer(false);
 }
 
 //Function to move the paddle on the right
 function onRight() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX + 20;
+    newPaddleX = paddleOX + 2;
     if (newPaddleX + paddleSizeX <= canva.width) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
       paddleOX = newPaddleX;
+    }
+    // Only continue animation if rightAnimation is still active
+    if (rightAnimation) {
+      rightAnimation = requestAnimationFrame(onRight);
     }
   }
 }
@@ -145,11 +165,15 @@ function onRight() {
 function onLeft() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX - 20;
+    newPaddleX = paddleOX - 2;
     if (newPaddleX >= 0) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
       paddleOX = newPaddleX;
+    }
+    // Only continue animation if leftAnimation is still active
+    if (leftAnimation) {
+      leftAnimation = requestAnimationFrame(onLeft);
     }
   }
 }
@@ -165,8 +189,11 @@ function handeBallBehavior(){
   ballY = 100;
   pastX = ballX;
   pastY = ballY;
+
+
+  
   let ballInterval = setInterval(() => {
-    ballX += ballSpeed; // ballX += ballSpeed => vers la droite ballY += ballSpeed => vers le bas
+    ballY += ballSpeed; // ballX += ballSpeed => vers la droite ballY += ballSpeed => vers le bas
   
     drawBallMoving(ballX, ballY);
 
