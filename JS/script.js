@@ -190,11 +190,14 @@ function handeBallBehavior(){
   pastX = ballX;
   pastY = ballY;
 
-  ballSpeedX = 1;
-  ballSpeedY = 3;
+  defaultXspeed = 1.5;
+  defaultYspeed = -3;
+
+  ballSpeedX = defaultXspeed;
+  ballSpeedY = defaultYspeed;
   
   let ballInterval = setInterval(() => {
-    ballY += ballSpeedY; // ballX += ballSpeed => vers la droite ballY += ballSpeed => vers le bas
+    ballY += ballSpeedY; 
     ballX += ballSpeedX;
 
     drawBallMoving(ballX, ballY);
@@ -208,8 +211,8 @@ function handeBallBehavior(){
       ballX >= paddleOX &&
       ballX <= paddleOX + paddleSizeX
     ) {
-      console.log("impact paddle");
-      clearInterval(ballInterval);
+      //console.log("impact paddle");
+      ballSpeedY = -ballSpeedY;
     }
 
     // Collision avec les bords
@@ -219,16 +222,22 @@ function handeBallBehavior(){
       clearInterval(ballInterval);
     }
     if (ballX + ballRadius >= canva.width) {
-      console.log("impact à droite");
-      clearInterval(ballInterval);
+      //console.log("impact à droite");
+      ballSpeedX = -ballSpeedX;
+      addSpeed();
+      console.log("Vitesse X : " + ballSpeedX + " Vitesse Y : " + ballSpeedY);
     }
     if (ballX - ballRadius <= 0) {
-      console.log("impact à gauche");
-      clearInterval(ballInterval);
+      //console.log("impact à gauche");
+      ballSpeedX = -ballSpeedX;
+      addSpeed();
+      console.log("Vitesse X : " + ballSpeedX + " Vitesse Y : " + ballSpeedY);
     }
     if (ballY - ballRadius <= 0) {
-      console.log("impact en haut");
-      clearInterval(ballInterval);
+      //console.log("impact en haut");
+      ballSpeedY = -ballSpeedY;
+      addSpeed();
+      console.log("Vitesse X : " + ballSpeedX + " Vitesse Y : " + ballSpeedY);
     }
   }, 15);
 }
@@ -243,3 +252,25 @@ function drawBallMoving(ballX, ballY) {
     ctx.fill();
     ctx.closePath();
   }
+
+
+  //add speed to the ball after each bounce up to (times the original speed)
+function addSpeed(){
+    //entre -speed de base *5 et 0
+    if( ballSpeedX > -defaultXspeed*5 && ballSpeedX < 0 ){
+      ballSpeedX -= 0.5;
+    }
+
+    if( ballSpeedY > -defaultYspeed*5 && ballSpeedY < 0 ){
+      ballSpeedY -= 0.5;
+    }
+
+    //entre 0 et la speed de base *5
+  if ( ballSpeedX > 0 && ballSpeedX < defaultXspeed*5){
+    ballSpeedX += 0.5;
+  } 
+    
+  if ( ballSpeedY > 0 && ballSpeedY < defaultYspeed*5){
+    ballSpeedY += 0.5;
+  } 
+}
