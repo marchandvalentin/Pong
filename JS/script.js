@@ -17,9 +17,13 @@ paddleSizeY = 10;
 //ballSpeed = 3;
 ballRadius = 6;
 
+//score variable
+sc = 0;
+
 // Animation frame variables
 let rightAnimation = null;
 let leftAnimation = null;
+let last = 0; // For timer timing
 
 /* -------------------------------------------------------------------------- */
 /*                                EVENT LISTNER                               */
@@ -85,18 +89,15 @@ function launchgame() {
 
     drawBall(canva.width/2, 100);
     gameIsOn = true;
-    handleTimer(true);
+    handleTimer();
     handeBallBehavior();
   }
 }
 
 //Function to launch the timer
 function launchtimer() {
-  sc = 0;
-  ti = setInterval(() => {
-    sc++;
-    score.textContent = "Score : " + sc + " s";
-  }, 1000);
+  lastTime = 0; // Initialize timing variable
+  timerAnimation = window.requestAnimationFrame(handleTimer);
 }
 
 //Function to stop the timer and reset the score to 0
@@ -106,11 +107,17 @@ function stoptimer() {
 }
 
 
-function handleTimer(val) {
-  if (val == false) {
-    stoptimer();
+function handleTimer(now) {
+  if (gameIsOn == true) {
+    if (now - last >= 1000) { // Wait 1 second (1000ms)
+      sc++;
+      score.textContent = "Score : " + sc + " s";
+      last = now;
+    }
+    timerAnimation = window.requestAnimationFrame(handleTimer); // Continue the loop
   } else {
-    launchtimer();
+    window.cancelAnimationFrame(timerAnimation);
+    stoptimer();
   }
 }
 
