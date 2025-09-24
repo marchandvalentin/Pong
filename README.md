@@ -1,3 +1,4 @@
+
 # 🏓Pong🏓
 
 This project was made as a class project, to create a solo pong web game made with javascript.
@@ -10,9 +11,13 @@ You can access the latest realease by clicking the following link :
 https://marchandvalentin.github.io/Pong
 
 
+## 🛠 Skills
+Javascript, HTML, CSS...
+
+
 ## Authors
 
-- [@marchandvalentin](https://www.github.com/marchandvalentin)
+- [@marchandvalentin](https://www.github.com/marchandvalentin) -->MARCHAND Valentin
 
-- [@Tgby240](https://www.github.com/Tgby270)
+- [@Tgby240](https://www.github.com/Tgby270) --> GROSSIN Tristan
 
