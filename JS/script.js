@@ -41,15 +41,6 @@ closebtn.addEventListener("click", () => {
   closegame();
 });
 
-right.addEventListener("mousedown", () => {
-  rightAnimation = window.requestAnimationFrame(onRight);
-});
-
-right.addEventListener("mouseup", () => {
-  window.cancelAnimationFrame(rightAnimation);
-  rightAnimation = null;
-});
-
 document.body.addEventListener("keydown", function (event) {
   const key = event.key;
   switch (key) {
@@ -65,6 +56,25 @@ document.body.addEventListener("keydown", function (event) {
   }
 });
 
+right.addEventListener("mousedown", () => {
+  rightAnimation = window.requestAnimationFrame(onRight);
+});
+
+right.addEventListener("mouseup", () => {
+  window.cancelAnimationFrame(rightAnimation);
+  rightAnimation = null;
+});
+
+right.addEventListener("touchstart", () => {
+  rightAnimation = window.requestAnimationFrame(onRight);
+});
+
+right.addEventListener("touchend", () => {
+  window.cancelAnimationFrame(rightAnimation);
+  rightAnimation = null;
+});
+
+
 left.addEventListener("mousedown", () => {
   leftAnimation = window.requestAnimationFrame(onLeft);
 });
@@ -73,6 +83,17 @@ left.addEventListener("mouseup", () => {
   window.cancelAnimationFrame(leftAnimation);
   leftAnimation = null;
 });
+
+left.addEventListener("touchstart", () => {
+  leftAnimation = window.requestAnimationFrame(onLeft);
+});
+
+left.addEventListener("touchend", () => {
+  window.cancelAnimationFrame(leftAnimation);
+  leftAnimation = null;
+});
+
+
 
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
