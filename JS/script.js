@@ -2,6 +2,7 @@
 /*                            VARIABLES DECLARATION                           */
 /* -------------------------------------------------------------------------- */
 
+//HTML elements
 launch = document.getElementById("launch");
 closebtn = document.getElementById("close");
 canva = document.getElementById("pongCanva");
@@ -9,6 +10,7 @@ score = document.getElementById("score");
 left = document.getElementById("left");
 right = document.getElementById("right");
 
+//Paddle variables
 gameIsOn = false;
 
 paddleSizeX = 75;
@@ -31,16 +33,18 @@ let ballInterval = null;
 /*                                EVENT LISTNER                               */
 /* -------------------------------------------------------------------------- */
 
-
+//Launch the game when clicking on the launch button
 launch.addEventListener("click", () => {
   launchgame();
   console.log("Game launched !"); 
 });
 
+//Close the game when clicking on the close button
 closebtn.addEventListener("click", () => {
   closegame();
 });
 
+//Move the paddle when pressing the left or right arrow keys (on PC)
 document.body.addEventListener("keydown", function (event) {
   const key = event.key;
   switch (key) {
@@ -56,38 +60,45 @@ document.body.addEventListener("keydown", function (event) {
   }
 });
 
+//Move the paddle when pressing the left or right button (with the mouse)
 right.addEventListener("mousedown", () => {
   rightAnimation = window.requestAnimationFrame(onRight);
 });
 
+// Stop the animation when the mouse button is released
 right.addEventListener("mouseup", () => {
   window.cancelAnimationFrame(rightAnimation);
   rightAnimation = null;
 });
 
+//Move the paddle when touching the left or right button (on mobile)
 right.addEventListener("touchstart", () => {
   rightAnimation = window.requestAnimationFrame(onRight);
 });
 
+// Stop the animation when the touch ends
 right.addEventListener("touchend", () => {
   window.cancelAnimationFrame(rightAnimation);
   rightAnimation = null;
 });
 
-
+//Move the paddle when pressing the left button (with the mouse)
 left.addEventListener("mousedown", () => {
   leftAnimation = window.requestAnimationFrame(onLeft);
 });
 
+// Stop the animation when the mouse button is released
 left.addEventListener("mouseup", () => {
   window.cancelAnimationFrame(leftAnimation);
   leftAnimation = null;
 });
 
+//Move the paddle when touching the left button (on mobile)
 left.addEventListener("touchstart", () => {
   leftAnimation = window.requestAnimationFrame(onLeft);
 });
 
+// Stop the animation when the touch ends
 left.addEventListener("touchend", () => {
   window.cancelAnimationFrame(leftAnimation);
   leftAnimation = null;
@@ -99,7 +110,10 @@ left.addEventListener("touchend", () => {
 /*                                  FUNCTIONS                                 */
 /* -------------------------------------------------------------------------- */
 
-//Function to launch the game
+/**
+ * Function to launch the game
+ * @return {void}
+ */
 function launchgame() {
   if (gameIsOn == false) {
     paddleOX = canva.width/2-paddleSizeX/2;
@@ -113,20 +127,31 @@ function launchgame() {
   }
 }
 
-//Function to launch the timer
+
+/**
+ * Function to launch the timer which counts the seconds the player lasts in the game
+ * @return {void}
+ */
 function launchtimer() {
   lastTime = 0; // Initialize timing variable
   timerAnimation = window.requestAnimationFrame(handleTimer);
 }
 
-//Function to stop the timer and reset the score to 0
+/**
+ * Function to stop the timer, reste the score to 0 and save the last score
+ * @return {void}
+ */
 function stoptimer() {
   keepScore =  sc;
   sc = 0;
   score.textContent = "Score : 0 s";
 }
 
-
+/**
+ * function to handle the timer's incrementation, animation and stopping
+ * @return {void}
+ * @param {*} now 
+ */
 function handleTimer(now) {
   if (gameIsOn == true) {
     if (now - last >= 1000) { // Wait 1 second (1000ms)
@@ -141,7 +166,11 @@ function handleTimer(now) {
   }
 }
 
-//Function to draw the paddle
+/**
+ * Function to draw the paddle on the canvas
+ * @param {number} x 
+ * @param {number} y 
+ */
 function drawPaddle(x, y) {
   ctx = canva.getContext("2d");
   ctx.fillStyle = "black";
@@ -149,7 +178,11 @@ function drawPaddle(x, y) {
   ctx.fillRect(x, y, paddleSizeX, paddleSizeY); // x, y, width, height
 }
 
-//Function to draw the ball
+/***
+ * Function to draw the ball on the canvas
+ * @param {number} x 
+ * @param {number} y 
+ */
 function drawBall(x, y){
   ctx = canva.getContext("2d");
   ctx.beginPath();
@@ -158,7 +191,10 @@ function drawBall(x, y){
   ctx.stroke();
 }
 
-//Fucntion to stop the game
+/**
+ * function to stop the game
+ * @return {void}
+ */
 function closegame() {
   ctx = canva.getContext("2d");
   ctx.clearRect(0, 0, canva.width, canva.height);
@@ -168,10 +204,12 @@ function closegame() {
     clearInterval(ballInterval);
     ballInterval = null;
   }
-  //window.location.reload();
 }
 
-//Function to move the paddle on the right
+/**
+ * Function to move the paddle on the right
+ * @return {void}
+ */
 function onRight() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
@@ -188,7 +226,10 @@ function onRight() {
   }
 }
 
-//Function to move the paddle on the left
+/**
+ * Function to move the paddle on the left
+ * @return {void}
+ */
 function onLeft() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
@@ -205,11 +246,19 @@ function onLeft() {
   }
 }
 
-function handleEndagme() {
+/**
+ * Function to handle the end of the game, stop it and display the final score
+ * @return {void}
+ */
+function handleEndgame() {
   closegame();
   score.textContent = "You lost the Game ! \n You'll do better next time.\n Here is your score : " + keepScore + " s" ;
 }
 
+/**
+ * Function to handle the ball's behavior, movement and collisions
+ * @return {void}
+ */
 function handeBallBehavior(){
   //spawn position o the ball
   ballX = canva.width/2;
@@ -275,6 +324,12 @@ function handeBallBehavior(){
   }, 15);
 }
 
+/**
+ * Function to draw the ball's movement on the canvas
+ * @param {*} ballX 
+ * @param {*} ballY
+ * @returns {void}
+ */
 function drawBallMoving(ballX, ballY) {
     ctx = canva.getContext("2d");
     ctx.clearRect(0, 0, canva.width, canva.height); // Efface le canvas
@@ -287,7 +342,10 @@ function drawBallMoving(ballX, ballY) {
   }
 
 
-//add speed to the ball after each bounce up to (times the original speed)
+/**
+ * Function to add speed to the ball after each bounce up to (times the original speed)
+ * @return {void}
+ */
 function addSpeed(){
   //entre -speed de base *5 et 0
   if( ballSpeedX > -defaultXspeed*5 && ballSpeedX < 0 ){
@@ -308,6 +366,10 @@ function addSpeed(){
   } 
 }
 
+/**
+ *  Function to select a random number for the ball's initial speed
+ * @returns {number} rand A random number between -2 and 2 but not between -1.5 and 1.5
+ */
 function selectRandNumber(){
   min = -2.0;
   max = 2.0;
