@@ -18,12 +18,14 @@ paddleSizeY = 10;
 ballRadius = 6;
 
 //score variable
-sc = 0;
-
+let sc = 0;
+let keepScore = 0;
 // Animation frame variables
 let rightAnimation = null;
 let leftAnimation = null;
 let last = 0; // For timer timing
+
+let ballInterval = null;
 
 /* -------------------------------------------------------------------------- */
 /*                                EVENT LISTNER                               */
@@ -52,18 +54,14 @@ document.body.addEventListener("keydown", function (event) {
   const key = event.key;
   switch (key) {
     case "ArrowLeft":
-      leftAnimation = window.requestAnimationFrame(onLeft);
+      onLeft();
       break;
+      
     case "ArrowRight":
-      rightAnimation = window.requestAnimationFrame(onRight);
+      onRight();
       break;
-    
-    default:
-      window.cancelAnimationFrame(leftAnimation);
-      window.cancelAnimationFrame(rightAnimation);
-      leftAnimation = null;
-      rightAnimation = null;
-      break;
+
+
   }
 });
 
@@ -102,6 +100,7 @@ function launchtimer() {
 
 //Function to stop the timer and reset the score to 0
 function stoptimer() {
+  keepScore =  sc;
   sc = 0;
   score.textContent = "Score : 0 s";
 }
@@ -142,20 +141,20 @@ function drawBall(x, y){
 function closegame() {
   ctx = canva.getContext("2d");
   ctx.clearRect(0, 0, canva.width, canva.height);
-
-  /*paddleOX = canva.width/2-paddleSizeX/2;
-  paddleOY = canva.height-20;
-  drawPaddle(paddleOX, paddleOY);*/
-
   gameIsOn = false;
   handleTimer(false);
+  if (ballInterval) {
+    clearInterval(ballInterval);
+    ballInterval = null;
+  }
+  //window.location.reload();
 }
 
 //Function to move the paddle on the right
 function onRight() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX + 5;
+    newPaddleX = paddleOX + 8;
     if (newPaddleX + paddleSizeX <= canva.width) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
@@ -172,7 +171,7 @@ function onRight() {
 function onLeft() {
   if (gameIsOn == true) {
     ctx = canva.getContext("2d");
-    newPaddleX = paddleOX - 5;
+    newPaddleX = paddleOX - 8;
     if (newPaddleX >= 0) {
       ctx.clearRect(paddleOX, paddleOY, paddleSizeX, paddleSizeY);
       drawPaddle(newPaddleX, paddleOY);
@@ -184,26 +183,32 @@ function onLeft() {
     }
   }
 }
- 
-function handleEndagme() {
-  alert("You lost the Game ! \n You'll do better next time.");
 
-  handleTimer(false);
+function handleEndagme() {
+  closegame();
+  score.textContent = "You lost the Game ! \n You'll do better next time.\n Here is your score : " + keepScore + " s" ;
 }
 
 function handeBallBehavior(){
-  ballX = canva.width / 2;
-  ballY = 100;
+  //spawn position o the ball
+  ballX = canva.width/2;
+  ballY = canva.height - 30;
+
+  //the last known coordinates of the ball
   pastX = ballX;
   pastY = ballY;
 
-  defaultXspeed = 1.5;
-  defaultYspeed = -3;
+  //default speed of the ball
+  defaultXspeed = 0.025 + Math.random()*2;
+  defaultYspeed = -3 + Math.random()*2;
+
+  console.log("Default Xspeed chose : " + defaultXspeed);
+  console.log("Default Yspeed chose : " + defaultYspeed);
 
   ballSpeedX = defaultXspeed;
   ballSpeedY = defaultYspeed;
   
-  let ballInterval = setInterval(() => {
+  ballInterval = setInterval(() => {
     ballY += ballSpeedY; 
     ballX += ballSpeedX;
 
@@ -225,7 +230,7 @@ function handeBallBehavior(){
     // Collision avec les bords
     if (ballY + ballRadius >= canva.height) {
       console.log("Perdu !");
-      closegame();
+      handleEndagme();
       clearInterval(ballInterval);
     }
     if (ballX + ballRadius >= canva.width) {
@@ -280,4 +285,18 @@ function addSpeed(){
   if ( ballSpeedY > 0 && ballSpeedY < defaultYspeed*5){
     ballSpeedY += 0.5;
   } 
+}
+
+function selectRandNumber(){
+  min = -2.0;
+  max = 2.0;
+  
+  rand = Math.floor(Math.random() * (max - min + 1.0)) + min;
+
+  if(rand < 1.5 && rand > -1.5){
+    selectRandNumber();
+  }
+  else{
+    return rand;
+  }
 }
