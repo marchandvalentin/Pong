@@ -147,9 +147,9 @@ function stoptimer() {
   score.textContent = "Score : 0 s";
 }
 
-/**
- * function to handle the timer's incrementation, animation and stopping
- * @return {void}
+  /**
+   * function to handle the timer's incrementation, animation and stopping
+   * @return {void}
  * @param {*} now 
  */
 function handleTimer(now) {
@@ -300,7 +300,7 @@ function handeBallBehavior(){
     // Collision avec les bords
     if (ballY + ballRadius >= canva.height) {
       console.log("Perdu !");
-      handleEndagme();
+      handleEndgame();
       clearInterval(ballInterval);
     }
     if (ballX + ballRadius >= canva.width) {
