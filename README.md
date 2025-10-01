@@ -19,5 +19,5 @@ Javascript, HTML, CSS...
 
 - [@marchandvalentin](https://www.github.com/marchandvalentin) -->MARCHAND Valentin
 
-- [@Tgby240](https://www.github.com/Tgby270) --> GROSSIN Tristan
+- [@Tgby270](https://www.github.com/Tgby270) --> GROSSIN Tristan
 
